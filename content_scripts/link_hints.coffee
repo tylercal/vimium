@@ -656,9 +656,7 @@ LocalHints =
           "button" , "tab" , "link", "checkbox", "menuitem", "menuitemcheckbox", "menuitemradio"
         ] or
         (contentEditable = element.getAttribute "contentEditable") and
-          contentEditable.toLowerCase() in ["", "contenteditable", "true"] or
-      (document.defaultView.getComputedStyle(element, null).cursor == "pointer" and
-        document.defaultView.getComputedStyle(element.parentElement, null).cursor != "pointer")
+          contentEditable.toLowerCase() in ["", "contenteditable", "true"]
       isClickable = true
 
     # Check for jsaction event listeners on the element.
@@ -716,6 +714,10 @@ LocalHints =
     # class name, we mark them as unreliable.
     if not isClickable and 0 <= element.getAttribute("class")?.toLowerCase().indexOf "button"
       possibleFalsePositive = isClickable = true
+
+    isClickable ||= element.className != "" and
+        document.defaultView.getComputedStyle(element, null).cursor == "pointer" and
+        document.defaultView.getComputedStyle(element.parentElement, null).cursor != "pointer"
 
     # Elements with tabindex are sometimes useful, but usually not. We can treat them as second class
     # citizens when it improves UX, so take special note of them.
