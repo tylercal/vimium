@@ -656,7 +656,9 @@ LocalHints =
           "button" , "tab" , "link", "checkbox", "menuitem", "menuitemcheckbox", "menuitemradio"
         ] or
         (contentEditable = element.getAttribute "contentEditable") and
-          contentEditable.toLowerCase() in ["", "contenteditable", "true"]
+          contentEditable.toLowerCase() in ["", "contenteditable", "true"] or
+      (document.defaultView.getComputedStyle(element, null).cursor == "pointer" and
+        document.defaultView.getComputedStyle(element.parentElement, null).cursor != "pointer")
       isClickable = true
 
     # Check for jsaction event listeners on the element.
